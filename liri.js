@@ -3,66 +3,39 @@ var keys = require("./keys.js");
 const axios = require("axios");
 var fs = require('fs');
 var Spotify = require('node-spotify-api');
-var spotify = new Spotify(keys.spotify);
-
-// console.log(keys.spotify.id);
-// console.log(keys.spotify.secret);
-
-var command = process.argv[2];  
-// var songName = process.argv[3];  
-let queryString = process.argv[3];
-// var artistName = process.argv[4];
-// var movieName = process.argv[5];
+var spotify = new Spotify(keys.spotify); // grabbing spotify ID and Secret
 
 
-// switch(command) {
-//     case 'concert-this':
-//      concertThis(queryString);
-//       break;
-//     case 'spotify-this-song':
-//      spotifyThisSong(queryString);
-//       break;
-//     case 'movie-this':
-//       movieThis(queryString);
-//       break;
-//     case 'do-what-it-says':
-//       doThis(queryString);
-//       break;
-//     default:
-//         console.log("Enter correct command");
-//   }
-// 
+var command = process.argv[2]; //third argument in command lind: concert this, spotify-this-song, movie-this, do-what-it-says 
+console.log(command);
+let queryString = process.argv[3]; // fourth argument in command line (name of a song, movie or artis/band)
 
+// getting data from Bands In Town API using axios
+var concertThis = function() {
+    const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
+    axios.get(queryUrl).then(function (res) {
+        console.log(res.data[0]);
+        console.log(res.data[0].venue.name);
+        // console.log(res.venue.city);
+        // console.log(res.datetime);
+    });
+}
 
-// calling spotify API 
-// var spotifyThisSong = function(songName) {
-//     spotify
-//         .search({ type: 'track', query: songName })
-//         .then(function(response) {
-//         console.log(response);
-//         })
-//         .catch(function(err) {
-//         console.log(err);
-//         });
-// }
+// getting data from  Node-Spotify-API using spotify.search method
+var spotifyThisSong = function() {
+    spotify
+        .search({ type: 'track', query: queryString })
+        .then(function(response) {
+        console.log(response);
+        })
+        .catch(function(err) {
+        console.log(err);
+        });
+}
 
-// spotifyThisSong(queryString);
-
-// //calling bandsintown API 
-// var concertThis = function (artistName) {
-//     const queryUrl = `https://rest.bandsintown.com/artists/${artistName}/events?app_id=codingbootcamp`;
-//     axios.get(queryUrl).then(function (res) {
-//         console.log(res.data);
-//         // console.log(res.venue.name);
-//         // console.log(res.venue.city);
-//         // console.log(res.datetime);
-//     });
-// }
-// concertThis(queryString);
-
-// // // calling OMDB API 
-var movieThis = function (movieName) {
-    const queryUrl = `http://www.omdbapi.com/?i=tt${movieName}&apikey=38168999`;
+// getting data from  OMDB API 
+var movieThis = function() {
+    const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
     axios.get(queryUrl).then(function (res) {
         console.log(res.data);
         // console.log(res.Title);
@@ -76,4 +49,26 @@ var movieThis = function (movieName) {
     });
 }
 
-movieThis(queryString);
+// switch control which functio gets rendered based on which command is put into command line
+switch(command) {
+    case 'concert-this':
+      concertThis();
+      break;
+    case 'spotify-this-song':
+     spotifyThisSong();
+      break;
+    case 'movie-this':
+      movieThis();
+      break;
+    case 'do-what-it-says':
+      doThis();
+      break;
+    default:
+        console.log("Enter correct command");
+  }
+
+
+
+
+
+
