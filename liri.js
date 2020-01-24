@@ -49,6 +49,20 @@ var movieThis = function() {
     });
 }
 
+// reading data from random.txt file
+var doThis = function(){
+    fs.readFile("random.txt", "utf8", function(error, data) {
+
+        if (error) {
+          return console.log(error);
+        }
+      
+        console.log(data);
+      
+      });
+}
+
+
 // switch control which functio gets rendered based on which command is put into command line
 switch(command) {
     case 'concert-this':
