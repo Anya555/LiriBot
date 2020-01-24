@@ -1,8 +1,8 @@
 require("dotenv").config();
 var keys = require("./keys.js");
-const axios = require("axios");
-var fs = require('fs');
-var Spotify = require('node-spotify-api');
+const axios = require("axios"); // Axios promise-based Node package for reading HTTP requests
+var fs = require('fs'); // fs is a Node standard library package for reading and writing files
+var Spotify = require('node-spotify-api'); // Node spotify package
 var spotify = new Spotify(keys.spotify); // grabbing spotify ID and Secret
 
 
@@ -14,10 +14,10 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 var concertThis = function() {
     const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
     axios.get(queryUrl).then(function (res) {
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
         console.log(res.data[0].venue.name);
-        // console.log(res.venue.city);
-        // console.log(res.datetime);
+        console.log(res.data[0].venue.city);
+        console.log(res.data[0].datetime);
     });
 }
 
