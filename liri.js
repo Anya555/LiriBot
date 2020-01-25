@@ -4,9 +4,11 @@ const axios = require("axios"); // Axios promise-based Node package for reading 
 var fs = require('fs'); // fs is a Node standard library package for reading and writing files
 var Spotify = require('node-spotify-api'); // Node spotify package
 var spotify = new Spotify(keys.spotify); // grabbing spotify ID and Secret
+var moment = require('moment'); // moment node package
+moment().format();
 
 
-var command = process.argv[2]; //third argument in command lind: concert this, spotify-this-song, movie-this, do-what-it-says 
+var command = process.argv[2]; //third argument in command lind: concert-this, spotify-this-song, movie-this, do-what-it-says 
 console.log(command);
 let queryString = process.argv[3]; // fourth argument in command line (name of a song, movie or artis/band)
 
