@@ -14,10 +14,10 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 var concertThis = function() {
     const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
     axios.get(queryUrl).then(function (res) {
-        console.log(res.data[0]);
-        console.log(res.data[0].venue.name);
-        console.log(res.data[0].venue.city);
-        console.log(res.data[0].datetime);
+        // console.log(res.data[0]);
+        console.log("Name of the venue: " + res.data[0].venue.name);
+        console.log("Venue location: " + res.data[0].venue.city);
+        console.log("Date of the Event: " + res.data[0].datetime);
     });
 }
 
@@ -38,14 +38,14 @@ var movieThis = function() {
     const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
     axios.get(queryUrl).then(function (res) {
         // console.log(res.data);
-        console.log(res.data.Title);
-        console.log(res.data.Year);
-        console.log(res.data.imdbRating);
-        console.log(res.data.Ratings[1].Value); 
-        console.log(res.data.Country);
-        console.log(res.data.Language);
-        console.log(res.data.Plot);
-        console.log(res.data.Actors);
+        console.log("Title of the movie: " + res.data.Title);
+        console.log("Year the movie came out: " + res.data.Year);
+        console.log("IMDB Rating of the movie: " + res.data.imdbRating);
+        console.log("Rotten Tomatoes Rating of the movie: " + res.data.Ratings[1].Value); 
+        console.log(" Country where the movie was produced: " + res.data.Country);
+        console.log("Language of the movie: " + res.data.Language);
+        console.log("Plot of the movie: " + res.data.Plot);
+        console.log("Actors in the movie: " + res.data.Actors);
     });
 }
 
