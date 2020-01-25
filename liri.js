@@ -14,7 +14,7 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 var concertThis = function() {
     const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
     axios.get(queryUrl).then(function (res) {
-        // console.log(res.data[0]);
+        console.log(res.data[0]);
         console.log(res.data[0].venue.name);
         console.log(res.data[0].venue.city);
         console.log(res.data[0].datetime);
@@ -37,15 +37,15 @@ var spotifyThisSong = function() {
 var movieThis = function() {
     const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
     axios.get(queryUrl).then(function (res) {
-        console.log(res.data);
-        // console.log(res.Title);
-        // console.log(res.Year);
-        // console.log(res.imdbRating);
-        // console.log(res.Ratings[1]);
-        // console.log(res.Country);
-        // console.log(res.Language);
-        // console.log(res.Plot);
-        // console.log(res.Actors);
+        // console.log(res.data);
+        console.log(res.data.Title);
+        console.log(res.data.Year);
+        console.log(res.data.imdbRating);
+        console.log(res.data.Ratings[1].Value); 
+        console.log(res.data.Country);
+        console.log(res.data.Language);
+        console.log(res.data.Plot);
+        console.log(res.data.Actors);
     });
 }
 
