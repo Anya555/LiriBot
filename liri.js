@@ -14,7 +14,6 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 var concertThis = function() {
     const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
     axios.get(queryUrl).then(function (res) {
-        // console.log(res.data[0]);
         console.log("Name of the venue: " + res.data[0].venue.name);
         console.log("Venue location: " + res.data[0].venue.city);
         console.log("Date of the Event: " + res.data[0].datetime);
@@ -24,20 +23,23 @@ var concertThis = function() {
 // getting data from  Node-Spotify-API using spotify.search method
 var spotifyThisSong = function() {
     spotify
-        .search({ type: 'track', query: queryString })
-        .then(function(response) {
-        console.log(response);
-        })
+        .search({ type: 'track', query: queryString, limit: 1 })
+        .then(function(data) {
+        console.log("Artist(s): " + data.tracks.items[0].artists[0].name);
+        console.log("The song's name: " + data.tracks.items[0].name);
+        console.log("A preview link of the song from Spotify: " + data.tracks.items[0].preview_url);
+        console.log("The album that the song is from: " + data.tracks.items[0].album.name);
+    })
         .catch(function(err) {
         console.log(err);
         });
 }
 
+
 // getting data from  OMDB API 
 var movieThis = function() {
     const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
     axios.get(queryUrl).then(function (res) {
-        // console.log(res.data);
         console.log("Title of the movie: " + res.data.Title);
         console.log("Year the movie came out: " + res.data.Year);
         console.log("IMDB Rating of the movie: " + res.data.imdbRating);
@@ -52,13 +54,10 @@ var movieThis = function() {
 // reading data from random.txt file
 var doThis = function(){
     fs.readFile("random.txt", "utf8", function(error, data) {
-
         if (error) {
           return console.log(error);
         }
-      
         console.log(data);
-      
       });
 }
 
