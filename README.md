@@ -16,7 +16,7 @@ A preview link of the song from Spotify;
 
 The album that the song is from;
 
-![Spotify](./assets/images/concert-this.png)
+![Spotify](./assets/images/spotify.png)
 
 2.  OMDB API 
 
