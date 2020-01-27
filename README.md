@@ -48,7 +48,11 @@ Venue location
 
 Date of the Event in this moment  format: "MM/DD/YYYY"
 
-![Movie](./assets/images/concert-this.png)
+![Event](./assets/images/concert-this.png)
+
+If there in no response for an artist you're looking for you'll get this message:
+
+![Event](./assets/images/default.png)
 
 4. fs Node package
 
