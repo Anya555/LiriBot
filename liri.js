@@ -1,6 +1,6 @@
 require("dotenv").config();
 const keys = require("./keys.js");
-const axios = require("axios"); // Axios promise-based Node package for reading HTTP requests
+const axios = require("axios"); // Axios is a promise-based Node package for reading HTTP requests
 const fs = require('fs'); // fs is a Node standard library package for reading and writing files
 const Spotify = require('node-spotify-api'); // Node spotify package
 const spotify = new Spotify(keys.spotify); // grabbing spotify ID and Secret
@@ -12,10 +12,12 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 
 // getting data from Bands In Town API using axios
 let concertThis = function() {
-    let queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
+    const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
     axios.get(queryUrl).then(function (res) {
+        // console.log(res.data);
         console.log("Name of the venue: " + res.data[0].venue.name);
         console.log("Venue location: " + res.data[0].venue.city);
+        console.log("Date of the Event: ");
         console.log(moment(res.data[0].datetime).format('L'));  
     });
 }
@@ -23,8 +25,8 @@ let concertThis = function() {
 
 // getting data from  Node-Spotify-API using spotify.search method
 let spotifyThisSong = function() {
-    spotify
-        .search({ type: 'track', query: queryString, limit: 1 })
+    spotify              
+        .search({ type: 'track', query: queryString, limit: 1 })  // setting limit to 1 will only give 1 response instead of 20, which also makes it easier to traverse the data
         .then(function(data) {
         console.log("Artist(s): " + data.tracks.items[0].artists[0].name);
         console.log("The song's name: " + data.tracks.items[0].name);
@@ -39,6 +41,11 @@ let spotifyThisSong = function() {
 
 // getting data from  OMDB API 
 let movieThis = function() {
+  // If the user doesn't type a movie in, 
+  //the program will output data for the movie 'Mr. Nobody.'
+if(!queryString){
+  queryString = "Mr Nobody"
+}
     const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
     axios.get(queryUrl).then(function (res) {
         console.log("Title of the movie: " + res.data.Title);
