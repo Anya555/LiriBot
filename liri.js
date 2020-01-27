@@ -14,12 +14,14 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 let concertThis = function() {
     const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
     axios.get(queryUrl).then(function (res) {
-        // console.log(res.data);
         console.log("Name of the venue: " + res.data[0].venue.name);
         console.log("Venue location: " + res.data[0].venue.city);
         console.log("Date of the Event: ");
         console.log(moment(res.data[0].datetime).format('L'));  
-    });
+    })
+    .catch(function(err) {
+      console.log("There is no events for this artist!");
+      });
 }
 
 
@@ -34,7 +36,7 @@ let spotifyThisSong = function() {
         console.log("The album that the song is from: " + data.tracks.items[0].album.name);
     })
         .catch(function(err) {
-        console.log(err);
+        console.log("Something went wrong. Please try a different song");
         });
 }
 
@@ -56,7 +58,10 @@ if(!queryString){
         console.log("Language of the movie: " + res.data.Language);
         console.log("Plot of the movie: " + res.data.Plot);
         console.log("Actors in the movie: " + res.data.Actors);
-    });
+    })
+    .catch(function(err) {
+      console.log("Something went wrong. Please try a different movie");
+      });
 }
 
 // reading data from random.txt file
