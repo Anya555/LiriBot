@@ -11,13 +11,13 @@ console.log(command);
 let queryString = process.argv[3]; // fourth argument in command line (name of a song, movie or artis/band)
 
 // getting data from Bands In Town API using axios
-let concertThis = function () {
+let concertThis = () => {
   const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
   axios.get(queryUrl).then(function (res) {
-    console.log("Name of the venue: " + res.data[0].venue.name);
-    console.log("Venue location: " + res.data[0].venue.city);
+    console.log(`Name of the venue: ${res.data[0].venue.name}`);
+    console.log(`Venue location: ${res.data[0].venue.city}`);
     let DOE = (moment(res.data[0].datetime).format('L'));
-    console.log("Date of the Event: " + DOE);
+    console.log(`Date of the Event: ${DOE}`);
   })
     .catch(function (err) {
       console.log("Sorry, there is no events for this artist!");
@@ -44,10 +44,10 @@ let concertThis = function () {
 const spotifyThisSong = async (str) => {
   try {
     const data = await spotify.search({ type: 'track', query: queryString, limit: 1 })
-    let artist = ("Artist(s): " + data.tracks.items[0].artists[0].name);
-    let songName = ("The song's name: " + data.tracks.items[0].name);
-    let previewLink = ("A preview link of the song from Spotify: " + data.tracks.items[0].preview_url);
-    let album = ("The album that the song is from: " + data.tracks.items[0].album.name);
+    let artist = (`Artist(s):${data.tracks.items[0].artists[0].name}`);
+    let songName = (`The song's name: ${data.tracks.items[0].name}`);
+    let previewLink = (`A preview link of the song from Spotify: ${data.tracks.items[0].preview_url}`);
+    let album = (`The album that the song is from: ${data.tracks.items[0].album.name}`);
     console.log(artist);
     console.log(songName);
     console.log(previewLink);
@@ -60,7 +60,7 @@ const spotifyThisSong = async (str) => {
 }
 
 // getting data from  OMDB API 
-let movieThis = function () {
+let movieThis = () => {
   // If the user doesn't type a movie in, 
   //the program will output data for the movie 'Mr. Nobody.'
   if (!queryString) {
@@ -68,19 +68,19 @@ let movieThis = function () {
   }
   const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
   axios.get(queryUrl).then(function (res) {
-    console.log("Title of the movie: " + res.data.Title);
-    console.log("Year the movie came out: " + res.data.Year);
-    console.log("IMDB Rating of the movie: " + res.data.imdbRating);
+    console.log(`Title of the movie: ${res.data.Title}`);
+    console.log(`Year the movie came out: ${res.data.Year}`);
+    console.log(`IMDB Rating of the movie: ${res.data.imdbRating}`);
     // some movies don't have a Rotten Tomatoes rating
     try {
-      console.log("Rotten Tomatoes Rating of the movie: " + res.data.Ratings[1].Value);
+      console.log(`Rotten Tomatoes Rating of the movie: ${res.data.Ratings[1].Value}`);
     } catch (err) {
       console.log("Rotten Tomatoes has not rated this movie");
     };
-    console.log(" Country where the movie was produced: " + res.data.Country);
-    console.log("Language of the movie: " + res.data.Language);
-    console.log("Plot of the movie: " + res.data.Plot);
-    console.log("Actors in the movie: " + res.data.Actors);
+    console.log(`Country where the movie was produced: ${res.data.Country}`);
+    console.log(`Language of the movie: ${res.data.Language}`);
+    console.log(`Plot of the movie: ${res.data.Plot}`);
+    console.log(`Actors in the movie: ${res.data.Actors}`);
   })
     .catch(function (err) {
       console.log(err);
@@ -89,11 +89,11 @@ let movieThis = function () {
 }
 
 // reading data from random.txt file
-let doThis = function () {
+let doThis = () => {
   fs.readFile("random.txt", "utf8", function (error, data) {
     if (error) {
       return console.log(error);
-      console.log("Something went wrong..please try again")
+      console.log("Something went wrong..please try again");
     }
     console.log(data);
   });
