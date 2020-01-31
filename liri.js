@@ -7,24 +7,33 @@ const spotify = new Spotify(keys.spotify); // grabbing spotify ID and Secret
 const moment = require('moment'); // moment node package
 
 let command = process.argv[2]; //third argument in command lind: concert-this, spotify-this-song, movie-this, do-what-it-says 
-console.log(command);
-let queryString = process.argv[3]; // fourth argument in command line (name of a song, movie or artis/band)
+
+let queryString = "";
+for(var i = 3; i<process.argv.length; i++){
+  queryString += process.argv[i];
+  if( i < process.argv.length ) queryString += " ";
+}
+// console.log(queryString);
 
 // getting data from Bands In Town API using axios
 let concertThis = () => {
-  const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
+  console.log(queryString);
+  const queryUrl = `https://rest.bandsintown.com/artists/${queryString.trim()}/events?app_id=codingbootcamp`;
   axios.get(queryUrl).then(function (res) {
-    console.log(res.data[0]);
-    res.data.forEach(idx => {
-    console.log(`Name of the venue: ${idx.venue.name}`);
-    console.log(`Venue location: ${idx.venue.city}`);
-    let DOE = (moment(idx.datetime).format('L'));
-    console.log(`Date of the Event: ${DOE}`);
-  });
-  })
-    .catch(function (err) {
+    // console.log(res.data[0]);
+    if (res === undefined || res.data === undefined || !res.data.length) {
       console.log("Sorry, there is no events for this artist!");
-    });
+    } else {
+      res.data.forEach(idx => {
+        console.log(`Name of the venue: ${idx.venue.name}`);
+        console.log(`Venue location: ${idx.venue.city}`);
+        let DOE = (moment(idx.datetime).format('L'));
+        console.log(`Date of the Event: ${DOE}`);
+      })
+    }
+  }).catch(function (err) {
+    console.log("Sorry, there is no events for this artist!");
+  });
 }
 
 // getting data from  Node-Spotify-API using spotify.search method
@@ -46,7 +55,7 @@ let concertThis = () => {
 // getting data from  Node-Spotify-API using spotify.search method and async method
 const spotifyThisSong = async (str) => {
   try {
-    const data = await spotify.search({ type: 'track', query: queryString, limit: 1 })
+    const data = await spotify.search({ type: 'track', query: queryString.trim(), limit: 1 })
     let artist = (`Artist(s):${data.tracks.items[0].artists[0].name}`);
     let songName = (`The song's name: ${data.tracks.items[0].name}`);
     let previewLink = (`A preview link of the song from Spotify: ${data.tracks.items[0].preview_url}`);
@@ -64,26 +73,33 @@ const spotifyThisSong = async (str) => {
 
 // getting data from  OMDB API 
 let movieThis = () => {
+  console.log("movie");
   // If the user doesn't type a movie in, 
   //the program will output data for the movie 'Mr. Nobody.'
   if (!queryString) {
     queryString = "Mr Nobody"
   }
-  const queryUrl = `https://www.omdbapi.com/?t=${queryString}&apikey=trilogy`;
+
+  const queryUrl = `https://www.omdbapi.com/?t=${queryString.trim()}&apikey=trilogy`;
   axios.get(queryUrl).then(function (res) {
-    console.log(`Title of the movie: ${res.data.Title}`);
-    console.log(`Year the movie came out: ${res.data.Year}`);
-    console.log(`IMDB Rating of the movie: ${res.data.imdbRating}`);
-    // some movies don't have a Rotten Tomatoes rating
-    try {
-      console.log(`Rotten Tomatoes Rating of the movie: ${res.data.Ratings[1].Value}`);
-    } catch (err) {
-      console.log("Rotten Tomatoes has not rated this movie");
-    };
-    console.log(`Country where the movie was produced: ${res.data.Country}`);
-    console.log(`Language of the movie: ${res.data.Language}`);
-    console.log(`Plot of the movie: ${res.data.Plot}`);
-    console.log(`Actors in the movie: ${res.data.Actors}`);
+    // if (res === undefined || res.data === undefined || !res.data.length) {
+    //   console.log("Sorry, there is no movies have been found!");
+    // }else{
+    //   console.log(res);
+      console.log(`Title of the movie: ${res.data.Title}`);
+      console.log(`Year the movie came out: ${res.data.Year}`);
+      console.log(`IMDB Rating of the movie: ${res.data.imdbRating}`);
+      // some movies don't have a Rotten Tomatoes rating
+      try {
+        console.log(`Rotten Tomatoes Rating of the movie: ${res.data.Ratings[1].Value}`);
+      } catch (err) {
+        console.log("Rotten Tomatoes has not rated this movie");
+      };
+      console.log(`Country where the movie was produced: ${res.data.Country}`);
+      console.log(`Language of the movie: ${res.data.Language}`);
+      console.log(`Plot of the movie: ${res.data.Plot}`);
+      console.log(`Actors in the movie: ${res.data.Actors}`);
+    // }
   })
     .catch(function (err) {
       console.log(err);
