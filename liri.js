@@ -14,10 +14,13 @@ let queryString = process.argv[3]; // fourth argument in command line (name of a
 let concertThis = () => {
   const queryUrl = `https://rest.bandsintown.com/artists/${queryString}/events?app_id=codingbootcamp`;
   axios.get(queryUrl).then(function (res) {
-    console.log(`Name of the venue: ${res.data[0].venue.name}`);
-    console.log(`Venue location: ${res.data[0].venue.city}`);
-    let DOE = (moment(res.data[0].datetime).format('L'));
+    console.log(res.data[0]);
+    res.data.forEach(idx => {
+    console.log(`Name of the venue: ${idx.venue.name}`);
+    console.log(`Venue location: ${idx.venue.city}`);
+    let DOE = (moment(idx.datetime).format('L'));
     console.log(`Date of the Event: ${DOE}`);
+  });
   })
     .catch(function (err) {
       console.log("Sorry, there is no events for this artist!");
@@ -93,7 +96,6 @@ let doThis = () => {
   fs.readFile("random.txt", "utf8", function (error, data) {
     if (error) {
       return console.log(error);
-      console.log("Something went wrong..please try again");
     }
     console.log(data);
   });
